@@ -4,6 +4,13 @@ import (
 	"flag"
 	"fmt"
 	"os"
+
+	"github.com/tumult-project/tumult/version"
+)
+
+var (
+	// Version string filled by the compiler.
+	Version string
 )
 
 func usage() {
@@ -17,11 +24,6 @@ func usage() {
 	flag.PrintDefaults()
 }
 
-func version() {
-	version := "v0.0.0"
-	fmt.Printf("%s %s\n", os.Args[0], version)
-}
-
 func main() {
 	versionPtr := flag.Bool("version", false, "Show version information")
 
@@ -29,7 +31,10 @@ func main() {
 	flag.Parse()
 
 	if *versionPtr {
-		version()
+		program := os.Args[0]
+		v := version.GetVersion(Version)
+		vnumber := v.VersionNumber()
+		fmt.Printf("%s %s\n", program, vnumber)
 		os.Exit(0)
 	}
 

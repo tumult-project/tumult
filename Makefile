@@ -1,11 +1,19 @@
 GO = go
 # PACKAGES is a list of packages to build
 PACKAGES = $(shell go list ./...)
+# VERSION is the current version number to build
+VERSION=`cat .version`
+# LDFLAGS are the compiler flags being used
+LDFLAGS=-ldflags "-X main.Version=${VERSION}"
 
 # Building
 
 install:
-	$(GO) install -v $(PACKAGES)
+	$(GO) install $(LDFLAGS) -v $(PACKAGES)
+
+.PHONY: version
+version:
+	@echo $(VERSION)
 
 # Cleaning
 

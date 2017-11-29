@@ -1,4 +1,4 @@
-package tumult
+package main
 
 import "fmt"
 

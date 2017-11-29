@@ -17,6 +17,8 @@ func usage() {
 	fmt.Fprintf(os.Stderr, "Usage: %s [-version] [-help] <command> [<args>]\n", os.Args[0])
 	fmt.Fprintf(os.Stderr, "\n")
 	fmt.Fprintf(os.Stderr, "Available commands are:\n")
+	fmt.Fprintf(os.Stderr, "  version")
+	fmt.Fprintf(os.Stderr, "\tShow version information\n")
 	fmt.Fprintf(os.Stderr, "\n")
 	fmt.Fprintf(os.Stderr, "Available flags are:\n")
 	fmt.Fprintf(os.Stderr, "  -help\n")
@@ -26,6 +28,8 @@ func usage() {
 
 func main() {
 	versionPtr := flag.Bool("version", false, "Show version information")
+
+	versionCommand := flag.NewFlagSet("version", flag.ExitOnError)
 
 	flag.Usage = usage
 	flag.Parse()
@@ -38,5 +42,30 @@ func main() {
 		os.Exit(0)
 	}
 
-	usage()
+	// Verify that a subcommand has been provided
+	// os.Arg[0] is the main command
+	// os.Arg[1] will be the subcommand
+	if len(os.Args) < 2 {
+		usage()
+		os.Exit(2)
+	}
+
+	// Switch on the subcommand
+	// Parse the flags for appropriate FlagSet
+	// FlagSet.Parse() requires a set of arguments to parse as input
+	// os.Args[2:] will be all arguments starting after the subcommand at os.Args[1]
+	//
+	// TODO:
+	// * Check for unkown commands
+	switch os.Args[1] {
+	case "version":
+		versionCommand.Parse(os.Args[2:])
+	default:
+		usage()
+		os.Exit(1)
+	}
+
+	if versionCommand.Parsed() {
+		fmt.Println("version command")
+	}
 }

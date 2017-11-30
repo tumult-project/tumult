@@ -42,6 +42,7 @@ cover-html: cover-profile
 # Dependencies
 
 deps:
+	go get -u github.com/tumult-project/go-command
 
 dev-deps:
 	$(GO) get -u github.com/alecthomas/gometalinter

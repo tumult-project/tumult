@@ -1,6 +1,7 @@
 package main
 
 import (
+	cli "github.com/tumult-project/go-command"
 	"github.com/tumult-project/tumult/command"
 )
 
@@ -21,7 +22,7 @@ func main() {
 		}
 	*/
 
-	command.Register(command.VersionCommand)
+	cli.Register(command.VersionCommand)
 
-	command.Parse()
+	cli.Parse()
 }

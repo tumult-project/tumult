@@ -4,18 +4,19 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/tumult-project/go-command"
 	"github.com/tumult-project/tumult/version"
 )
 
 // VersionCommand is a command prints version information
-var VersionCommand = &Command{
+var VersionCommand = &command.Command{
 	Name:  "version",
 	Usage: "Show version information",
 	Run:   run,
 }
 
 // Run executes the command
-func run(cmd *Command, args []string) {
+func run(cmd *command.Command, args []string) {
 	program := args[0]
 	v := version.GetVersion("9.9.9")
 	vnumber := v.VersionNumber()

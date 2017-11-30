@@ -11,7 +11,10 @@ var (
 )
 
 func main() {
-	//versionPtr := flag.Bool("version", false, "Show version information")
+	// TODO:
+	// * ADD -version flag at the same level as -help
+	//
+	// versionPtr := flag.Bool("version", false, "Show version information")
 	/*
 		if *versionPtr {
 			program := os.Args[0]

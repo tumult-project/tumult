@@ -2,8 +2,7 @@ package version
 
 var (
 	// Version string filled by the compiler.
-	// Version string
-	Version = "9.9.9"
+	Version string
 )
 
 // Info is a type that holds tumult version information.
@@ -23,9 +22,9 @@ func (i *Info) VersionNumber() string {
 // * Add git support
 // * Add platform data like OS type
 // * Add environment data like compiler/language version
-func GetVersion(semver string) *Info {
+func GetVersion() *Info {
 	info := &Info{
-		SemVersion: semver,
+		SemVersion: Version,
 	}
 	return info
 }

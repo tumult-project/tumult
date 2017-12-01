@@ -4,7 +4,7 @@ PACKAGES = $(shell go list ./...)
 # VERSION is the current version number to build
 VERSION=`cat .version`
 # LDFLAGS are the compiler flags being used
-LDFLAGS=-ldflags "-X main.Version=${VERSION}"
+LDFLAGS=-ldflags "-X github.com/tumult-project/tumult/version.Version=${VERSION}"
 
 # Building
 
@@ -19,30 +19,22 @@ version:
 
 clean:
 	$(GO) clean
-	@rm -rf coverage-all.out
+	@rm -rf .coverage.out
 
 # Testing
 
 test:
-	$(GO) test -v $(PACKAGES)
+	$(GO) test -v -coverprofile=.coverage.out -covermode=count $(PACKAGES)
 
-cover-profile:
-	@echo "mode: count" > coverage-all.out
-	$(foreach pkg,$(PACKAGES),\
-		$(GO) test -coverprofile=coverage.out -covermode=count $(pkg);\
-		tail -n +2 coverage.out >> coverage-all.out;)
-	@rm -rf coverage.out
+cover: test
+	$(GO) tool cover -func=.coverage.out
 
-cover: cover-profile
-	$(GO) tool cover -func=coverage-all.out
-
-cover-html: cover-profile
-	$(GO) tool cover -html=coverage-all.out
+cover-html: test
+	$(GO) tool cover -html=.coverage.out
 
 # Dependencies
 
 deps:
-	go get -u github.com/tumult-project/go-command
 
 dev-deps:
 	$(GO) get -u github.com/alecthomas/gometalinter

@@ -27,5 +27,8 @@ func main() {
 
 	rootCmd.Parse()
 
-	rootCmd.Usage()
+	// Show help usage if no command is provided
+	if len(rootCmd.Args()) == 0 {
+		rootCmd.Usage()
+	}
 }

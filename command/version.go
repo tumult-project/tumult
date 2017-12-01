@@ -2,7 +2,6 @@ package command
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/tumult-project/go-command"
 	"github.com/tumult-project/tumult/version"
@@ -12,14 +11,10 @@ import (
 var VersionCommand = &command.Command{
 	Name:  "version",
 	Usage: "Show version information",
-	Run:   run,
-}
-
-// Run executes the command
-func run(cmd *command.Command, args []string) {
-	program := args[0]
-	v := version.GetVersion()
-	vnumber := v.VersionNumber()
-	fmt.Printf("%s %s\n", program, vnumber)
-	os.Exit(0)
+	Run: func(cmd *command.Command, args []string) {
+		program := args[0]
+		v := version.GetVersion()
+		vnumber := v.VersionNumber()
+		fmt.Printf("%s %s\n", program, vnumber)
+	},
 }

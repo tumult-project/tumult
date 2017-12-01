@@ -23,6 +23,7 @@ func main() {
 	var rootCmd = &cli.RootCommand{}
 
 	rootCmd.AddCommand(command.VersionCommand)
+	rootCmd.AddCommand(command.AgentCommand)
 
 	rootCmd.Parse()
 

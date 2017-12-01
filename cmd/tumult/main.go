@@ -25,7 +25,11 @@ func main() {
 		}
 	*/
 
-	cli.Register(command.VersionCommand)
+	var rootCmd = &cli.RootCommand{}
 
-	cli.Parse()
+	rootCmd.AddCommand(command.VersionCommand)
+
+	rootCmd.Parse()
+
+	rootCmd.Usage()
 }

@@ -5,11 +5,6 @@ import (
 	"github.com/tumult-project/tumult/command"
 )
 
-var (
-	// Version string filled by the compiler.
-	Version string
-)
-
 func main() {
 	// TODO:
 	// * ADD -version flag at the same level as -help

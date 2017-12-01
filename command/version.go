@@ -18,7 +18,7 @@ var VersionCommand = &command.Command{
 // Run executes the command
 func run(cmd *command.Command, args []string) {
 	program := args[0]
-	v := version.GetVersion("9.9.9")
+	v := version.GetVersion(version.Version)
 	vnumber := v.VersionNumber()
 	fmt.Printf("%s %s\n", program, vnumber)
 	os.Exit(0)

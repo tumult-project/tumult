@@ -1,5 +1,11 @@
 package version
 
+var (
+	// Version string filled by the compiler.
+	// Version string
+	Version = "9.9.9"
+)
+
 // Info is a type that holds tumult version information.
 type Info struct {
 	SemVersion string

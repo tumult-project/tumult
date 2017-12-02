@@ -1,35 +1,34 @@
-package api
+package ui
 
 import (
 	"log"
 	"net/http"
 
-	"github.com/tumult-project/tumult/api/route"
+	"github.com/tumult-project/tumult/ui/route"
 )
 
-// Service is an API service implementation
+// Service is a UI service implementation
 type Service struct {
 	server *http.Server
 }
 
 // Start starts the API service
 func (s *Service) Start() error {
-	log.Println("start API service")
+	log.Println("start UI service")
 
 	s.server = &http.Server{}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", route.Home)
-	mux.HandleFunc("/teapot", route.TeaPot)
 
-	go http.ListenAndServe(":8080", mux)
+	go http.ListenAndServe(":8081", mux)
 
 	return nil
 }
 
 // Stop stops a running API service
 func (s *Service) Stop() error {
-	log.Println("stop API service")
+	log.Println("stop UI service")
 
 	s.server.Shutdown(nil)
 

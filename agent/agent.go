@@ -8,11 +8,13 @@ import (
 
 	"github.com/tumult-project/tumult/api"
 	"github.com/tumult-project/tumult/service"
+	"github.com/tumult-project/tumult/ui"
 )
 
 // Agent ...
 type Agent struct {
 	APIService service.Servicer
+	UIService  service.Servicer
 
 	signal chan os.Signal
 	quit   chan bool
@@ -34,6 +36,9 @@ func (a *Agent) Start() {
 	a.APIService = &api.Service{}
 	a.APIService.Start()
 
+	a.UIService = &ui.Service{}
+	a.UIService.Start()
+
 	a.handleGracefulShutdown()
 }
 
@@ -42,6 +47,8 @@ func (a *Agent) Stop() {
 	log.Println("Stopping agent...")
 
 	a.APIService.Stop()
+
+	a.UIService.Stop()
 }
 
 // handleGracefulShutdown enables graceful shutdown for this agent

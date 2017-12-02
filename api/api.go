@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/tumult-project/tumult/service/api/route"
+	"github.com/tumult-project/tumult/api/route"
 )
 
 // Service is a public API service implementation

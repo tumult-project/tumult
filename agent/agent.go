@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/tumult-project/tumult/api"
 	"github.com/tumult-project/tumult/service"
-	"github.com/tumult-project/tumult/service/api"
 )
 
 // Agent ...

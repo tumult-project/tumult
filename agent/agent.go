@@ -1,17 +1,18 @@
 package agent
 
 import (
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/tumult-project/tumult/service"
+	"github.com/tumult-project/tumult/service/api"
 )
 
 // Agent ...
 type Agent struct {
-	APIService *http.Server
+	APIService service.Servicer
 
 	signal chan os.Signal
 	quit   chan bool
@@ -23,7 +24,6 @@ func NewAgent() (*Agent, error) {
 		signal: make(chan os.Signal, 1),
 		quit:   make(chan bool, 1),
 	}
-
 	return agent, nil
 }
 
@@ -31,42 +31,30 @@ func NewAgent() (*Agent, error) {
 func (a *Agent) Start() {
 	log.Println("Starting agent...")
 
-	signal.Notify(a.signal, syscall.SIGINT, syscall.SIGTERM)
+	a.APIService = &api.Service{}
+	a.APIService.Start()
 
-	a.APIService = a.StartAPIService()
-
-	go func() {
-		_ = <-a.signal
-		a.StopAPIService()
-		a.quit <- true
-	}()
-	<-a.quit
+	a.handleGracefulShutdown()
 }
 
 // Stop stops a running agent
 func (a *Agent) Stop() {
 	log.Println("Stopping agent...")
+
+	a.APIService.Stop()
 }
 
-// StartAPIService starts the API service for this agent
-func (a *Agent) StartAPIService() *http.Server {
-	log.Println("start api service")
-
-	srv := &http.Server{Addr: ":8080"}
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "hello world\n")
-	})
+// handleGracefulShutdown enables graceful shutdown for this agent
+//
+// listens for two signals
+// SIGTERM: generic signal used to cause program termination.
+// SIGINT: signal used when the user types C-c
+func (a *Agent) handleGracefulShutdown() {
+	signal.Notify(a.signal, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-			// cannot panic, because this probably is an intentional close
-			log.Printf("api service: ListenAndServe() error: %s\n", err)
-		}
+		_ = <-a.signal
+		a.Stop()
+		a.quit <- true
 	}()
-	return srv
-}
-
-// StopAPIService stops a running API service
-func (a *Agent) StopAPIService() {
-	log.Println("stop api service")
-	a.APIService.Shutdown(nil)
+	<-a.quit
 }

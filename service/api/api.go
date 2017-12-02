@@ -19,6 +19,7 @@ func (s *Service) Start() error {
 	s.server = &http.Server{Addr: ":8080"}
 
 	http.HandleFunc("/", route.Home)
+	http.HandleFunc("/teapot", route.TeaPot)
 
 	go s.server.ListenAndServe()
 
